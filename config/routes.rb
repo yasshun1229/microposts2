@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   
   get "signup", to: "users#new" # ユーザ登録のURLをsignupにする
   resources :users, only: [:index, :show, :new, :create] # ユーザの一覧ページ、詳細ページ、ユーザ登録はOKだが、編集やアカウント削除はできない。
+  
+  resources :microposts, only: [:create, :destroy] # Micropostは新規投稿と削除のみ
 end
