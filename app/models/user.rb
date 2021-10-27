@@ -26,4 +26,8 @@ class User < ApplicationRecord
   def following?(other_user)
     self.followings.include?(other_user) # フォローしているUserを取得し、他のユーザが含まれていないか確認
   end
+  
+  def feed_microposts
+    Micropost.where(user_id: self.following_ids + [self.id])
+  end
 end

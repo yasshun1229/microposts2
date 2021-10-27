@@ -2,10 +2,15 @@ class RelationshipsController < ApplicationController
   before_action :require_user_logged_in
   
   def create
-    user = User.find(params[:follow_id])
-    current_user.follow(user)
-    flash[:success] = "ユーザをフォローしました"
-    redirect_to user
+    @micropost = current_user.microposts.build(micropost_params)
+    if @micropost.save
+      flash[:success] = 'メッセージを投稿しました。'
+      redirect_to root_url
+    else
+      @pagy, @microposts = pagy(current_user.feed_microposts.order(id: :desc))
+      flash.now[:danger] = 'メッセージの投稿に失敗しました。'
+      render 'toppages/index'
+    end
   end
 
   def destroy
